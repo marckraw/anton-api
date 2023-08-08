@@ -15,6 +15,7 @@ import { ReportsModule } from './reports/reports.module';
 import { UserModule } from './user/user.module';
 import { readFileSync } from 'fs';
 import { AiModule } from './ai/ai.module';
+import { AuthTokenGuard } from './guards/auth-token.guard';
 
 @Module({
   imports: [
@@ -83,7 +84,8 @@ import { AiModule } from './ai/ai.module';
     AiModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthTokenGuard],
+  exports: [AuthTokenGuard],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
