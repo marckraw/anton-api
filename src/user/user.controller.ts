@@ -20,6 +20,7 @@ import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
 import { AuthGuard } from '../guards/auth.guard';
+import { AuthRevokeAllGuard } from '../guards/auth-revoke-all.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -37,7 +38,6 @@ export class UserController {
 
   @Get('/colors')
   getColor(@Session() session: any) {
-    console.log(session.color);
     return session.color;
   }
 
@@ -61,6 +61,7 @@ export class UserController {
   }
 
   @Post('/signup')
+  @UseGuards(AuthRevokeAllGuard)
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     const { email, password } = body;
 
@@ -81,6 +82,7 @@ export class UserController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthRevokeAllGuard)
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     const { email, password } = body;
 
@@ -89,11 +91,7 @@ export class UserController {
 
   @Get('/:id')
   async findUser(@Param('id') id: string) {
-    console.log('Handler is running');
     const user = await this.userService.findOne(id);
-
-    console.log('This is user found: ');
-    console.log(user);
 
     if (!user) {
       throw new NotFoundException('user not found');
@@ -104,12 +102,11 @@ export class UserController {
 
   @Get()
   findAllUsers(@Query('email') email: string) {
-    console.log('passed email: ');
-    console.log(email);
     return this.userService.find(email);
   }
 
   @Delete('/:id')
+  @UseGuards(AuthRevokeAllGuard)
   removeUser(@Param('id') id: string) {
     return this.userService.remove(id);
   }
