@@ -22,8 +22,7 @@
     "################################################## DOCKER ##################################################": "#",
     "docker:build": "docker build -t peakpursuit-api .",
     "docker:build:dev": "docker build -t peakpursuit-api-dev -f dev.Dockerfile .",
-    "docker:run": "docker run -p 8080:8080 peakpursuit-api",
-    "docker:run:dev": "docker run -p 8080:8080 -v $(pwd):/app peakpursuit-api-dev",
+    "docker:run:dev": "docker run --env-file .env.development -p 8080:8080 -d --name anton-api-1 anton-api",
     "docker:db": "docker-compose up -d",
     "docker:db:stop": "docker-compose down",
     "docker:db:logs": "docker-compose logs -f"

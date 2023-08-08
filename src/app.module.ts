@@ -13,6 +13,8 @@ import { User } from './user/user.entity';
 import { Report } from './reports/report.entity';
 import { ReportsModule } from './reports/reports.module';
 import { UserModule } from './user/user.module';
+import { readFileSync } from 'fs';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -42,6 +44,12 @@ import { UserModule } from './user/user.module';
           username: configService.get<string>('POSTGRES_USER'),
           password: configService.get<string>('POSTGRES_PASSWORD'),
           database: configService.get<string>('POSTGRES_DB'),
+          ssl: {
+            rejectUnauthorized: true,
+            ca: readFileSync(
+              __dirname + '/../' + 'ca-certificate.crt',
+            ).toString(),
+          },
           synchronize: true,
           autoLoadEntities: true,
           entities: [User, Report],
@@ -72,6 +80,7 @@ import { UserModule } from './user/user.module';
     MessagesModule,
     ReportsModule,
     UserModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

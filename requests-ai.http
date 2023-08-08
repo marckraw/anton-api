@@ -1,0 +1,10 @@
+### GET Messages
+GET http://localhost:8080/v1/ai
+
+### Create a new message
+POST http://localhost:8080/v1/ai
+Content-Type: application/json
+
+{
+  "message": "Hello, How are you ?"
+}

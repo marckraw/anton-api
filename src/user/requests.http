@@ -7,6 +7,15 @@ Content-Type: application/json
   "password": "123456789"
 }
 
+### Sign up
+POST https://anton.mrck.dev/v1/auth/signup
+Content-Type: application/json
+
+{
+  "email": "revanello@icloud.com",
+  "password": "123456789"
+}
+
 ### Sign In
 POST http://localhost:8080/v1/auth/signin
 Content-Type: application/json
