@@ -13,8 +13,6 @@ export class AiController {
 
   @Post()
   sendMessage(@Body() body: AiMessageDto) {
-    console.log('This is body to post');
-    console.log(body);
-    console.log('POST AI');
+    return this.aiService.simpleCompletion(body.content);
   }
 }
