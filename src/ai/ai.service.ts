@@ -23,7 +23,7 @@ export class AiService {
       messages: [
         {
           role: 'system',
-          content: systemPrompts.returnWholeUserMessageAsJSON(),
+          content: systemPrompts.basePrompt(),
         },
         {
           role: 'user',

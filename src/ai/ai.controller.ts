@@ -1,17 +1,20 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AiService } from './ai.service';
 import { AiMessageDto } from './dto/ai-message.dto';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('ai')
 export class AiController {
   constructor(public aiService: AiService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   getAiMessages() {
     console.log('Get ai');
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   sendMessage(@Body() body: AiMessageDto) {
     return this.aiService.simpleCompletion(body.content);
   }
