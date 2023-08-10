@@ -25,16 +25,6 @@ import { AuthTokenGuard } from './guards/auth-token.guard';
       }`,
       isGlobal: true,
     }), // helps with getting envs into the project, also have ConfigService Globally available
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: process.env.DATABASE_HOST,
-    //   port: Number(process.env.DATABASE_PORT),
-    //   username: process.env.DATABASE_USERNAME,
-    //   password: process.env.DATABASE_PASSWORD,
-    //   database: process.env.DATABASE_NAME,
-    //   synchronize: true,
-    //   autoLoadEntities: true,
-    // }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -57,23 +47,6 @@ import { AuthTokenGuard } from './guards/auth-token.guard';
         };
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'sqlite',
-    //   database: 'db-2.sqlite',
-    //   entities: [User, Report],
-    //   synchronize: true,
-    // }),
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: (configService: ConfigService) => {
-    //     return {
-    //       type: 'sqlite',
-    //       database: configService.get<string>('DB_NAME'),
-    //       synchronize: true,
-    //       entities: [User, Report],
-    //     };
-    //   },
-    // }),
     UtilPublicModule,
     PictureModule,
     TagModule,
