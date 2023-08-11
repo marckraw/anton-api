@@ -28,6 +28,7 @@
     "docker:db:logs": "docker-compose logs -f"
   },
   "dependencies": {
+    "@nem035/gpt-3-encoder": "^1.1.7",
     "@nestjs/common": "^10.1.3",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.1.3",

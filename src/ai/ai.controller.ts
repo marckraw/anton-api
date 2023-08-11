@@ -40,4 +40,10 @@ export class AiController {
   generateImage(@Body() body: AiImageDto) {
     return this.aiService.createImage(body.prompt);
   }
+
+  @Post('/single-shot/tokens')
+  @UseGuards(AuthTokenGuard)
+  countTokens(@Body() body: ChatGPTRequestDto) {
+    return this.aiService.countTokens(body.prompt);
+  }
 }

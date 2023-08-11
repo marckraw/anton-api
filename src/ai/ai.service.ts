@@ -9,6 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Configuration, OpenAIApi } from 'openai';
 import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
+import utils from './utils.service';
 
 @Injectable()
 export class AiService {
@@ -58,5 +59,9 @@ export class AiService {
     });
 
     return data;
+  }
+
+  countTokens(prompt: string) {
+    return utils.countTokens(prompt);
   }
 }
