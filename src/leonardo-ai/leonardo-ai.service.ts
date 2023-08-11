@@ -44,6 +44,7 @@ export class LeonardoAiService {
   constructor(private configService: ConfigService) {
     this.authorizationToken = configService.get<string>('LEONARDO_AI_TOKEN');
     this.baseConfiguration = {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authorizationToken}`,
@@ -54,6 +55,35 @@ export class LeonardoAiService {
   async getMe() {
     // TODO: Do the try catch dance here... lets make it generic
     const fetched = await fetch(`${this.baseUrl}/me`, {
+      ...this.baseConfiguration,
+    });
+
+    const result = await fetched.json();
+
+    return result;
+  }
+
+  async generationsByUserId(
+    id: string,
+    offset: number = 0,
+    limit: number = 10,
+  ) {
+    // TODO: Do the try catch dance here... lets make it generic
+    const fetched = await fetch(
+      `${this.baseUrl}/generations/user/${id}?limit=${limit}&offset=${offset}`,
+      {
+        ...this.baseConfiguration,
+      },
+    );
+
+    const result = await fetched.json();
+
+    return result;
+  }
+
+  async generationsById(id: string) {
+    // TODO: Do the try catch dance here... lets make it generic
+    const fetched = await fetch(`${this.baseUrl}/generations/${id}`, {
       ...this.baseConfiguration,
     });
 
