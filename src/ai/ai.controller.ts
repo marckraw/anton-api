@@ -4,6 +4,7 @@ import { AiMessageDto } from './dto/ai-message.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
+import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 
 @Controller('ai')
 export class AiController {
@@ -17,8 +18,8 @@ export class AiController {
 
   @Post()
   @UseGuards(AuthGuard)
-  sendMessage(@Body() body: AiMessageDto) {
-    return this.aiService.simpleCompletion(body.content);
+  sendMessage(@Body() body: ChatGPTRequestDto) {
+    return this.aiService.simpleCompletion(body);
   }
 
   // Embedding
@@ -30,8 +31,8 @@ export class AiController {
 
   @Post('/single-shot/chat')
   @UseGuards(AuthTokenGuard)
-  singleShotMessage(@Body() body: AiMessageDto) {
-    return this.aiService.simpleCompletion(body.content);
+  singleShotMessage(@Body() body: ChatGPTRequestDto) {
+    return this.aiService.simpleCompletion(body);
   }
 
   @Post('/single-shot/image')

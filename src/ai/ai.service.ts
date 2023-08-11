@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { openai } from './config';
 import { systemPrompts } from './prompts/system';
-import { defaultModel } from './constants';
+import {
+  FALLBACK_MAX_GPT3_TOKENS,
+  FALLBACK_MAX_GPT4_TOKENS,
+  FALLBACK_MODEL,
+  FALLBACK_TEMPERATURE,
+} from './constants';
 import { ConfigService } from '@nestjs/config';
 import { Configuration, OpenAIApi } from 'openai';
+import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 
 @Injectable()
 export class AiService {
@@ -17,9 +22,19 @@ export class AiService {
     this.openai = new OpenAIApi(configuration);
   }
 
-  async simpleCompletion(content: string) {
+  async simpleCompletion(body: ChatGPTRequestDto) {
+    const { temperature, max_tokens, model, prompt } = body;
+
+    const usedModel = model ? model : FALLBACK_MODEL;
+
     const { data } = await this.openai.createChatCompletion({
-      model: defaultModel,
+      model: usedModel,
+      temperature: temperature ? temperature : FALLBACK_TEMPERATURE,
+      max_tokens: max_tokens
+        ? max_tokens
+        : usedModel === 'gpt-3.5-turbo'
+        ? FALLBACK_MAX_GPT3_TOKENS
+        : FALLBACK_MAX_GPT4_TOKENS,
       messages: [
         {
           role: 'system',
@@ -27,7 +42,7 @@ export class AiService {
         },
         {
           role: 'user',
-          content,
+          content: prompt,
         },
       ],
     });
