@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session');
 const corsWhitelist = [
   'http://localhost:3000',
   'https://web.hyzone.app',
+  'http://localhost:1420',
   /(https:\/\/web-hyzone-)(.+)(-hyzone.vercel.app)/,
   'https://hyzone.app',
 ];
