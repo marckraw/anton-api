@@ -4,6 +4,7 @@ import { AiMessageDto } from './dto/ai-message.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
+import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
 import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 
 @Controller('ai')
@@ -18,7 +19,7 @@ export class AiController {
 
   @Post()
   @UseGuards(AuthGuard)
-  sendMessage(@Body() body: ChatGPTRequestDto) {
+  sendMessage(@Body() body: SingleShotChatGptRequestDto) {
     return this.aiService.simpleCompletion(body);
   }
 
@@ -29,9 +30,15 @@ export class AiController {
   //   return this.aiService.simpleCompletion(body.content);
   // }
 
+  @Post('/chat')
+  @UseGuards(AuthTokenGuard)
+  chat(@Body() body: ChatGPTRequestDto) {
+    return this.aiService.chat(body);
+  }
+
   @Post('/single-shot/chat')
   @UseGuards(AuthTokenGuard)
-  singleShotMessage(@Body() body: ChatGPTRequestDto) {
+  singleShotMessage(@Body() body: SingleShotChatGptRequestDto) {
     return this.aiService.simpleCompletion(body);
   }
 
@@ -43,7 +50,7 @@ export class AiController {
 
   @Post('/single-shot/tokens')
   @UseGuards(AuthTokenGuard)
-  countTokens(@Body() body: ChatGPTRequestDto) {
+  countTokens(@Body() body: SingleShotChatGptRequestDto) {
     return this.aiService.countTokens(body.prompt);
   }
 }

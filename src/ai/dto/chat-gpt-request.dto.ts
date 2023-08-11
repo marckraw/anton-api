@@ -1,13 +1,18 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ChatGPTModel } from '../constants';
+
+interface Message {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
 
 export class ChatGPTRequestDto {
   @IsOptional()
   @IsString()
   model: ChatGPTModel;
 
-  @IsString()
-  prompt: string;
+  @IsArray()
+  messages: Message[];
 
   @IsOptional()
   @IsNumber()
@@ -16,8 +21,4 @@ export class ChatGPTRequestDto {
   @IsOptional()
   @IsNumber()
   temperature?: number;
-
-  @IsOptional()
-  @IsBoolean()
-  stream?: boolean;
 }

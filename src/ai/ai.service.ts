@@ -8,8 +8,9 @@ import {
 } from './constants';
 import { ConfigService } from '@nestjs/config';
 import { Configuration, OpenAIApi } from 'openai';
-import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
+import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
 import utils from './utils.service';
+import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 
 @Injectable()
 export class AiService {
@@ -23,7 +24,26 @@ export class AiService {
     this.openai = new OpenAIApi(configuration);
   }
 
-  async simpleCompletion(body: ChatGPTRequestDto) {
+  async chat(body: ChatGPTRequestDto) {
+    const { temperature, max_tokens, model, messages } = body;
+
+    const usedModel = model ? model : FALLBACK_MODEL;
+
+    const { data } = await this.openai.createChatCompletion({
+      model: usedModel,
+      temperature: temperature ? temperature : FALLBACK_TEMPERATURE,
+      max_tokens: max_tokens
+        ? max_tokens
+        : usedModel === 'gpt-3.5-turbo'
+        ? FALLBACK_MAX_GPT3_TOKENS
+        : FALLBACK_MAX_GPT4_TOKENS,
+      messages,
+    });
+
+    return data;
+  }
+
+  async simpleCompletion(body: SingleShotChatGptRequestDto) {
     const { temperature, max_tokens, model, prompt } = body;
 
     const usedModel = model ? model : FALLBACK_MODEL;
