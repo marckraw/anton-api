@@ -16,6 +16,7 @@ import { UserModule } from './user/user.module';
 import { readFileSync } from 'fs';
 import { AiModule } from './ai/ai.module';
 import { AuthTokenGuard } from './guards/auth-token.guard';
+import { LeonardoAiModule } from './leonardo-ai/leonardo-ai.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AuthTokenGuard } from './guards/auth-token.guard';
     ReportsModule,
     UserModule,
     AiModule,
+    LeonardoAiModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthTokenGuard],

@@ -34,4 +34,14 @@ export class AiService {
 
     return data;
   }
+
+  async createImage(prompt: any) {
+    const { data } = await this.openai.createImage({
+      prompt: prompt,
+      n: 1,
+      size: '512x512',
+    });
+
+    return data;
+  }
 }
