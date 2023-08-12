@@ -17,6 +17,7 @@ import { readFileSync } from 'fs';
 import { AiModule } from './ai/ai.module';
 import { AuthTokenGuard } from './guards/auth-token.guard';
 import { LeonardoAiModule } from './leonardo-ai/leonardo-ai.module';
+import { DataHarvestModule } from './data-harvest/data-harvest.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { LeonardoAiModule } from './leonardo-ai/leonardo-ai.module';
     UserModule,
     AiModule,
     LeonardoAiModule,
+    DataHarvestModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthTokenGuard],
