@@ -1,3 +1,53 @@
+/*
+ *
+ *
+ * Tehcniki promptowania
+ *
+ *
+ * 1. Zero-shot:
+ *    what is...
+ *    it's...
+ *
+ * 2. One-shot / Few-show
+ *
+ *   Classify given query with one of these categories... as shown on a exaple below.
+ *    Example:
+ *    ...
+ *
+ *    Query:
+ *    ...
+ *
+ * 3. Chaing of Thought / Zero-show CoT / Tree of Thoughts
+ *  (...) explain step by step
+ *
+ *    1. ...
+ *    2. ...
+ *    3. ...
+ *
+ * Vocabulary, expressions and knowledge
+ * - avoid negations
+ *    dont use double quotes
+ *    Please use single quotes for string literals
+ *
+ *
+ * - Definitions
+ *   - What is... My car wont start. If you had to make a n educated guess using Occam;s RAzor, what would you indentify as problem ?
+ *    Dead battery
+ *
+ * - Expressions
+ * Now, act as Prompt Engineer for LLMs. Acknowledge this by ust saying "..." and nothing more.
+ *
+ *
+ * - Knowledge
+ * Explain "Embedding" in terms of LLMs. While answetingh, always make your best guess.
+ *
+ *
+ *
+ *
+ *
+ *
+ * */
+
 const returnWholeUserMessageAsJSON = () => {
   return `
   Your task is to....
