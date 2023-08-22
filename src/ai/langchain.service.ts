@@ -17,6 +17,10 @@ import {
 } from 'langchain/prompts';
 import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
 
+const getCurrentDate = () => {
+  return new Date().toISOString();
+};
+
 @Injectable()
 export class LangchainService {
   llm;
@@ -205,6 +209,8 @@ export class LangchainService {
     });
 
     console.log(formattedChatPrompt);
+
+    // TODO: Composition of longer prompts: https://js.langchain.com/docs/modules/model_io/prompts/prompt_templates/prompt_composition
 
     return formattedChatPrompt;
   }
