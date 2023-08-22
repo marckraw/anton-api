@@ -57,10 +57,36 @@ export class AiController {
     return this.aiService.countTokens(body.prompt);
   }
 
-  @Post('/test-llm')
+  @Post('/translate-text')
   @UseGuards(AuthTokenGuard)
   testLLM(@Body() body: SingleShotChatGptRequestDto) {
     // return this.langchainService.testSomething(body);
-    return this.langchainService.testChat(body);
+    return this.langchainService.translateText(body);
+  }
+
+  @Post('/ask-google')
+  @UseGuards(AuthTokenGuard)
+  askGoogle(@Body() body: SingleShotChatGptRequestDto) {
+    // return this.langchainService.testSomething(body);
+    return this.langchainService.askGoogle(body);
+  }
+
+  @Post('/llm-with-memory')
+  @UseGuards(AuthTokenGuard)
+  exampleWithMemory(@Body() body: SingleShotChatGptRequestDto) {
+    // return this.langchainService.testSomething(body);
+    return this.langchainService.exampleWithMemory(body);
+  }
+
+  @Post('/test-llm')
+  @UseGuards(AuthTokenGuard)
+  testingPromptCreation(@Body() body: SingleShotChatGptRequestDto) {
+    return this.langchainService.testingLLMPromptCreation(body);
+  }
+
+  @Post('/test-chat')
+  @UseGuards(AuthTokenGuard)
+  testingChatPromptCreation(@Body() body: SingleShotChatGptRequestDto) {
+    return this.langchainService.testingChatPromptCreation(body);
   }
 }
