@@ -1,15 +1,18 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AiService } from './ai.service';
-import { AiMessageDto } from './dto/ai-message.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
 import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
 import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
+import { LangchainService } from './langchain.service';
 
 @Controller('ai')
 export class AiController {
-  constructor(public aiService: AiService) {}
+  constructor(
+    public aiService: AiService,
+    public langchainService: LangchainService,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard)
@@ -52,5 +55,12 @@ export class AiController {
   @UseGuards(AuthTokenGuard)
   countTokens(@Body() body: SingleShotChatGptRequestDto) {
     return this.aiService.countTokens(body.prompt);
+  }
+
+  @Post('/test-llm')
+  @UseGuards(AuthTokenGuard)
+  testLLM(@Body() body: SingleShotChatGptRequestDto) {
+    // return this.langchainService.testSomething(body);
+    return this.langchainService.testChat(body);
   }
 }
