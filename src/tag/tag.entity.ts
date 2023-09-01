@@ -1,26 +1,26 @@
 import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Conversation } from '../conversation/conversation.entity';
+import { Message } from '../conversation/message.entity';
 
-@Entity()
-export class Tag extends BaseEntity {
+@Entity('tag')
+export class Tag {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @Column()
   name: string;
 
-  @Column({ nullable: true, type: 'text' })
-  description?: string;
+  @ManyToMany(() => Conversation, (conversation) => conversation.tags)
+  @JoinTable()
+  conversations: Conversation[];
+
+  @ManyToMany(() => Message, (message) => message.tags)
+  @JoinTable()
+  messages: Message[];
 }

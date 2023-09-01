@@ -21,6 +21,7 @@ import { DataHarvestModule } from './data-harvest/data-harvest.module';
 import { ConversationModule } from './conversation/conversation.module';
 import { Conversation } from './conversation/conversation.entity';
 import { Message } from './conversation/message.entity';
+import { Tag } from './tag/tag.entity';
 
 @Module({
   imports: [
@@ -48,7 +49,7 @@ import { Message } from './conversation/message.entity';
           },
           synchronize: true,
           autoLoadEntities: true,
-          entities: [User, Report, Conversation, Message],
+          entities: [User, Report, Conversation, Message, Tag],
         };
       },
     }),

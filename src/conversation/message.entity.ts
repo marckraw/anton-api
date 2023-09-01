@@ -31,9 +31,15 @@ export class Message {
   @Column({ type: 'uuid' })
   conversationId: string;
 
+  @Column({ nullable: true })
+  source: string; // To store the source of the message
+
   @ManyToOne(() => Conversation, (conversation) => conversation.messages)
   @JoinColumn({ name: 'conversationId' }) // This line is optional, but good to have for clarity.
   conversation: Conversation;
+
+  @Column('text', { array: true, default: () => 'array[]::text[]' })
+  tags: string[];
 
   @AfterInsert()
   logInsert() {

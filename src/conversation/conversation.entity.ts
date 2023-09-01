@@ -21,6 +21,9 @@ export class Conversation {
   @Column()
   model: string;
 
+  @Column('text', { array: true, default: () => 'array[]::text[]' })
+  tags: string[];
+
   @OneToMany(() => Message, (message) => message.conversation)
   messages: Message[];
 

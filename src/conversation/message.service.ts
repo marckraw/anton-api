@@ -14,11 +14,15 @@ export class MessageService {
     conversationId: string,
     role: 'assistant' | 'user' | 'system',
     message: string,
+    tags: string[],
+    source?: string,
   ): Promise<Message> {
     const newMessage = this.messageRepository.create({
       conversationId,
       role,
       message,
+      tags,
+      source,
     });
     return await this.messageRepository.save(newMessage);
   }

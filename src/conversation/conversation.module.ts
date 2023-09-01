@@ -8,8 +8,8 @@ import { MessageService } from './message.service';
 import { MessageController } from './message.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Conversation, Message])],
-  providers: [ConversationService, MessageService],
+  imports: [TypeOrmModule.forFeature([Conversation, Message])], // Added Tag
+  providers: [ConversationService, MessageService], // Added TagService
   controllers: [ConversationController, MessageController],
 })
 export class ConversationModule {}
