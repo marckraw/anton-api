@@ -62,4 +62,14 @@ export class LeonardoAiController {
   ) {
     return this.leonardoAiService.generationsByUserId(id, offset, limit);
   }
+
+  @Get('/remove/:id')
+  @UseGuards(AuthTokenGuard)
+  async removeGenerationsByUserId(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+    @Param('id') id: string,
+  ) {
+    return this.leonardoAiService.removeGenerationsByUserId(id, offset, limit);
+  }
 }

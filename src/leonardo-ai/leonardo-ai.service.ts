@@ -2,6 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LeonardoAiGenerationsDto } from './dto/leonardo-ai-generations.dto';
 
+const wait = async (time) => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
 type ModelsNames =
   | 'Leonardo Creative'
   | 'Leonardo Select'
@@ -90,6 +98,46 @@ export class LeonardoAiService {
     const result = await fetched.json();
 
     return result;
+  }
+
+  async removeGenerationsByUserId(
+    id: string,
+    offset: number = 0,
+    limit: number = 10,
+  ) {
+    let count = 0;
+    setInterval(async () => {
+      try {
+        const all = await this.generationsByUserId(id, offset, limit);
+
+        console.log('###');
+        console.log(all);
+        console.log('###');
+
+        await Promise.all(
+          all?.generations?.map(async (generation) => {
+            await wait(1000);
+            this._removeGenerationById(generation.id);
+          }),
+        );
+        count++;
+
+        if (count === 10) {
+          return true;
+        }
+      } catch (e) {
+        console.log('nothing, lets continue');
+      }
+    }, 10000);
+  }
+
+  async _removeGenerationById(id: string) {
+    const removed = await fetch(`${this.baseUrl}/generations/${id}`, {
+      ...this.baseConfiguration,
+      method: 'DELETE',
+    });
+
+    return removed;
   }
 
   async generations(body: LeonardoAiGenerationsDto) {

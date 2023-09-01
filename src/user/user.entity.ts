@@ -3,8 +3,10 @@ import {
   AfterRemove,
   AfterUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('usr') // Just because 'user' is a reserved word in Postgres
@@ -17,6 +19,12 @@ export class User {
 
   @Column()
   password: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @AfterInsert()
   logInsert() {

@@ -18,6 +18,9 @@ import { AiModule } from './ai/ai.module';
 import { AuthTokenGuard } from './guards/auth-token.guard';
 import { LeonardoAiModule } from './leonardo-ai/leonardo-ai.module';
 import { DataHarvestModule } from './data-harvest/data-harvest.module';
+import { ConversationModule } from './conversation/conversation.module';
+import { Conversation } from './conversation/conversation.entity';
+import { Message } from './conversation/message.entity';
 
 @Module({
   imports: [
@@ -45,7 +48,7 @@ import { DataHarvestModule } from './data-harvest/data-harvest.module';
           },
           synchronize: true,
           autoLoadEntities: true,
-          entities: [User, Report],
+          entities: [User, Report, Conversation, Message],
         };
       },
     }),
@@ -59,6 +62,7 @@ import { DataHarvestModule } from './data-harvest/data-harvest.module';
     AiModule,
     LeonardoAiModule,
     DataHarvestModule,
+    ConversationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthTokenGuard],
