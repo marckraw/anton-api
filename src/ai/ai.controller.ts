@@ -14,12 +14,6 @@ export class AiController {
     public langchainService: LangchainService,
   ) {}
 
-  @Get()
-  @UseGuards(AuthGuard)
-  getAiMessages() {
-    console.log('Get ai');
-  }
-
   @Post()
   @UseGuards(AuthGuard)
   sendMessage(@Body() body: SingleShotChatGptRequestDto) {
