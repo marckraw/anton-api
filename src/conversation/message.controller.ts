@@ -10,7 +10,7 @@ import {
 import { MessageService } from './message.service';
 import { Message } from './message.entity';
 
-@Controller('messages')
+@Controller('conversation/message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
