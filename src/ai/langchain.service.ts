@@ -10,12 +10,14 @@ import { HumanMessage, SystemMessage } from 'langchain/schema';
 import { ConversationChain, LLMChain } from 'langchain/chains';
 import {
   ChatPromptTemplate,
+  AIMessagePromptTemplate,
   SystemMessagePromptTemplate,
   HumanMessagePromptTemplate,
   MessagesPlaceholder,
   PromptTemplate,
 } from 'langchain/prompts';
 import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
+import { Conversation } from '../conversation/conversation.entity';
 
 const getCurrentDate = () => {
   return new Date().toISOString();
@@ -35,6 +37,7 @@ export class LangchainService {
 
     this.chat = new ChatOpenAI({
       openAIApiKey: configService.get<string>('OPEN_AI_TOKEN'),
+      modelName: 'gpt-4',
       temperature: 0,
     });
 
@@ -109,6 +112,41 @@ export class LangchainService {
     );
 
     const result = await executor.run(body.prompt);
+
+    return result;
+  }
+
+  async withConversationData(
+    body: SingleShotChatGptRequestDto,
+    conversationData: Conversation,
+  ) {
+    const allMessages = conversationData.messages.map((message) => {
+      if (message.role === 'system') {
+        return SystemMessagePromptTemplate.fromTemplate(message.message);
+      } else if (message.role === 'user') {
+        return HumanMessagePromptTemplate.fromTemplate(message.message);
+      } else if (message.role === 'assistant') {
+        return AIMessagePromptTemplate.fromTemplate(message.message);
+      }
+    });
+
+    const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+      SystemMessagePromptTemplate.fromTemplate(
+        'The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.',
+      ),
+      ...allMessages,
+      HumanMessagePromptTemplate.fromTemplate('{input}'),
+    ]);
+
+    const chain = new ConversationChain({
+      prompt: chatPrompt,
+      llm: this.chat,
+      verbose: true,
+    });
+
+    const result = await chain.call({
+      input: body.prompt,
+    });
 
     return result;
   }

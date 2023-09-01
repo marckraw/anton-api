@@ -11,5 +11,6 @@ import { MessageController } from './message.controller';
   imports: [TypeOrmModule.forFeature([Conversation, Message])], // Added Tag
   providers: [ConversationService, MessageService], // Added TagService
   controllers: [ConversationController, MessageController],
+  exports: [ConversationService, MessageService],
 })
 export class ConversationModule {}
