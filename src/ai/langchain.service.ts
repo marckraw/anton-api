@@ -37,7 +37,6 @@ export class LangchainService {
 
     this.chat = new ChatOpenAI({
       openAIApiKey: configService.get<string>('OPEN_AI_TOKEN'),
-      modelName: 'gpt-4',
       temperature: 0,
     });
 
