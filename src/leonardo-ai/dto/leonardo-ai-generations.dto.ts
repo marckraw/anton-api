@@ -58,4 +58,20 @@ export class LeonardoAiGenerationsDto {
   @IsOptional()
   @IsBoolean()
   promptMagic?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  alchemy: true;
+
+  @IsOptional()
+  @IsBoolean()
+  photoReal: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  photoRealStrength: number;
+
+  @IsOptional()
+  @IsString()
+  presetStyle: string;
 }

@@ -143,6 +143,10 @@ export class LeonardoAiService {
   async generations(body: LeonardoAiGenerationsDto) {
     const bodyParams: LeonardoAiGenerationsDto = {
       prompt: body.prompt,
+      alchemy: body.alchemy,
+      photoReal: body.photoReal ? body.photoReal : false,
+      photoRealStrength: body.photoRealStrength ? body.photoRealStrength : 0.5,
+      presetStyle: body.presetStyle ? body.presetStyle : 'CINEMATIC',
       negative_prompt: body.negative_prompt ? body.negative_prompt : '',
       modelId: body.modelId ? body.modelId : this.models['Leonardo Creative'],
       sd_version: body.sd_version ? body.sd_version : 'v1_5',
