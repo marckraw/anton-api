@@ -141,6 +141,8 @@ export class LeonardoAiService {
   }
 
   async generations(body: LeonardoAiGenerationsDto) {
+    console.log('Body: ');
+    console.log(body);
     const bodyParams: LeonardoAiGenerationsDto = {
       prompt: body.prompt,
       alchemy: body.alchemy,
@@ -148,7 +150,11 @@ export class LeonardoAiService {
       photoRealStrength: body.photoRealStrength ? body.photoRealStrength : 0.5,
       presetStyle: body.presetStyle ? body.presetStyle : 'CINEMATIC',
       negative_prompt: body.negative_prompt ? body.negative_prompt : '',
-      modelId: body.modelId ? body.modelId : this.models['Leonardo Creative'],
+      modelId: body.modelId
+        ? body.modelId
+        : !body.photoReal
+        ? this.models['Leonardo Creative']
+        : null,
       sd_version: body.sd_version ? body.sd_version : 'v1_5',
       num_images: body.num_images,
       width: body.width ? body.width : 640,

@@ -33,16 +33,18 @@ export class LangchainService {
     this.llm = new OpenAI({
       openAIApiKey: configService.get<string>('OPEN_AI_TOKEN'),
       temperature: 0.9,
+      modelName: 'gpt-4-1106-preview',
     });
 
     this.chat = new ChatOpenAI({
       openAIApiKey: configService.get<string>('OPEN_AI_TOKEN'),
       temperature: 0,
+      modelName: 'gpt-4-1106-preview',
     });
 
     this.gpt4Chat = new ChatOpenAI({
       openAIApiKey: configService.get<string>('OPEN_AI_TOKEN'),
-      modelName: 'gpt-4',
+      modelName: 'gpt-4-1106-preview',
       temperature: 0,
     });
   }
