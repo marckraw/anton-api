@@ -143,36 +143,47 @@ export class LeonardoAiService {
   async generations(body: LeonardoAiGenerationsDto) {
     console.log('Body: ');
     console.log(body);
-    const bodyParams: LeonardoAiGenerationsDto = {
-      prompt: body.prompt,
-      alchemy: body.alchemy,
-      photoReal: body.photoReal ? body.photoReal : false,
-      photoRealStrength: body.photoRealStrength ? body.photoRealStrength : 0.5,
-      presetStyle: body.presetStyle ? body.presetStyle : 'CINEMATIC',
-      negative_prompt: body.negative_prompt ? body.negative_prompt : '',
-      modelId: body.modelId
-        ? body.modelId
-        : !body.photoReal
-        ? this.models['Leonardo Creative']
-        : null,
-      sd_version: body.sd_version ? body.sd_version : 'v1_5',
-      num_images: body.num_images,
-      width: body.width ? body.width : 640,
-      height: body.height ? body.height : 832,
-      num_inference_steps: body.num_inference_steps
-        ? body.num_inference_steps
-        : 30, // 30 - 60
-      guidance_scale: body.guidance_scale ? body.guidance_scale : 7, // 1 - 20
-      init_generation_image_id: body.init_generation_image_id
-        ? body.init_generation_image_id
-        : null,
-      init_image_id: body.init_image_id ? body.init_image_id : null,
-      init_strength: body.init_strength ? body.init_strength : null, // null or 0.1 - 0.9
-      scheduler: body.scheduler ? body.scheduler : null, // string
-      tiling: body.tiling ? body.tiling : false,
-      public: body.public ? body.public : false,
-      promptMagic: body.promptMagic ? body.promptMagic : true,
-    };
+
+    let bodyParams: any = {};
+
+    if (body.photoReal) {
+      bodyParams = {
+        ...body,
+      };
+    } else {
+      bodyParams = {
+        prompt: body.prompt,
+        alchemy: body.alchemy,
+        photoReal: body.photoReal ? body.photoReal : false,
+        photoRealStrength: body.photoRealStrength
+          ? body.photoRealStrength
+          : 0.5,
+        presetStyle: body.presetStyle ? body.presetStyle : 'CINEMATIC',
+        negative_prompt: body.negative_prompt ? body.negative_prompt : '',
+        modelId: body.modelId
+          ? body.modelId
+          : !body.photoReal
+          ? this.models['Leonardo Creative']
+          : null,
+        sd_version: body.sd_version ? body.sd_version : 'v1_5',
+        num_images: body.num_images,
+        width: body.width ? body.width : 640,
+        height: body.height ? body.height : 832,
+        num_inference_steps: body.num_inference_steps
+          ? body.num_inference_steps
+          : 30, // 30 - 60
+        guidance_scale: body.guidance_scale ? body.guidance_scale : 7, // 1 - 20
+        init_generation_image_id: body.init_generation_image_id
+          ? body.init_generation_image_id
+          : null,
+        init_image_id: body.init_image_id ? body.init_image_id : null,
+        init_strength: body.init_strength ? body.init_strength : null, // null or 0.1 - 0.9
+        scheduler: body.scheduler ? body.scheduler : null, // string
+        tiling: body.tiling ? body.tiling : false,
+        public: body.public ? body.public : false,
+        promptMagic: body.promptMagic ? body.promptMagic : true,
+      };
+    }
 
     // TODO: Do the try catch dance here... lets make it generic
     const fetched = await fetch(`${this.baseUrl}/generations`, {
