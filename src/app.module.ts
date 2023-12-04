@@ -6,12 +6,8 @@ import { UtilPublicModule } from './util-public/util-public.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from './utils/logger.middleware';
 import { PictureModule } from './picture/picture.module';
-import { TagModule } from './tag/tag.module';
-import { StorageModule } from './storage/storage.module';
 import { MessagesModule } from './messages/messages.module';
 import { User } from './user/user.entity';
-import { Report } from './reports/report.entity';
-import { ReportsModule } from './reports/reports.module';
 import { UserModule } from './user/user.module';
 import { readFileSync } from 'fs';
 import { AiModule } from './ai/ai.module';
@@ -21,7 +17,7 @@ import { DataHarvestModule } from './data-harvest/data-harvest.module';
 import { ConversationModule } from './conversation/conversation.module';
 import { Conversation } from './conversation/conversation.entity';
 import { Message } from './conversation/message.entity';
-import { Tag } from './tag/tag.entity';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -44,26 +40,24 @@ import { Tag } from './tag/tag.entity';
           ssl: {
             rejectUnauthorized: true,
             ca: readFileSync(
-              __dirname + '/../' + 'ca-certificate.crt',
+              __dirname + '/../../' + 'ca-certificate.crt',
             ).toString(),
           },
           synchronize: true,
           autoLoadEntities: true,
-          entities: [User, Report, Conversation, Message, Tag],
+          entities: [User, Conversation, Message],
         };
       },
     }),
     UtilPublicModule,
     PictureModule,
-    TagModule,
-    StorageModule,
     MessagesModule,
-    ReportsModule,
     UserModule,
     AiModule,
     LeonardoAiModule,
     DataHarvestModule,
     ConversationModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthTokenGuard],

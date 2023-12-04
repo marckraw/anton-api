@@ -11,6 +11,7 @@ import {
 import { ConversationService } from './conversation.service';
 import { Conversation } from './conversation.entity';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
+import { ConversationModel } from './conversation.model';
 
 @Controller('conversation')
 export class ConversationController {
@@ -18,7 +19,7 @@ export class ConversationController {
 
   @Get()
   @UseGuards(AuthTokenGuard)
-  async getAllConversations(): Promise<Conversation[]> {
+  async getAllConversations(): Promise<ConversationModel[]> {
     return this.conversationService.getAllConversations();
   }
 

@@ -1,17 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Conversation } from './conversation.entity';
+import { ModelClass } from 'objection';
+import { ConversationModel } from './conversation.model';
 
 @Injectable()
 export class ConversationService {
   constructor(
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
+    @Inject('ConversationModel')
+    private readonly conversationModel: ModelClass<ConversationModel>,
   ) {}
 
-  async getAllConversations(): Promise<Conversation[]> {
-    return await this.conversationRepository.find();
+  async getAllConversations(): Promise<ConversationModel[]> {
+    return this.conversationModel.query();
   }
 
   async createConversation(
