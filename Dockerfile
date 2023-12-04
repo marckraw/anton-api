@@ -18,8 +18,8 @@ RUN yarn
 # Bundle your app's source code inside the Docker image
 COPY . .
 
-# Make port 8080 available outside the container
-EXPOSE 8080
+# Make port 30152 available outside the container
+EXPOSE 30152
 
 # Start the application
 RUN yarn build
