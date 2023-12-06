@@ -35,13 +35,13 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
-          command_timeout: 20m
+          command_timeout: 30m
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             docker pull marckraw/anton-api:latest
-#            docker stop anton-api || true
-#            docker rm anton-api || true
-#            docker run -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
+            docker stop anton-api || true
+            docker rm anton-api || true
+            docker run -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
