@@ -44,4 +44,4 @@ jobs:
             docker pull marckraw/anton-api:latest
             docker stop anton-api || true
             docker rm anton-api || true
-            docker run --env-file /dev/env-files/anton/.env.prod -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
+            docker run --env-file /dev/env-files/anton/.env.production -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
