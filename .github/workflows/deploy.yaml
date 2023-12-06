@@ -41,6 +41,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             docker pull marckraw/anton-api:latest
-            docker stop anton-api || true
-            docker rm anton-api || true
-            docker run -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
+#            docker stop anton-api || true
+#            docker rm anton-api || true
+#            docker run -d --name anton-api -p 30152:30152 marckraw/anton-api:latest
