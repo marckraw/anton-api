@@ -398,3 +398,4 @@ Temporary Items
 .env
 .env.*
 dist
+*.sqlite3

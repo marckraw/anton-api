@@ -6,10 +6,12 @@ import {
   Put,
   Delete,
   UseGuards,
+  Get,
 } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { Message } from './message.entity';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
+import { MessageModel } from './message.model';
 
 @Controller('conversation')
 export class MessageController {
@@ -18,23 +20,14 @@ export class MessageController {
   @Post('/:conversationId/message')
   @UseGuards(AuthTokenGuard)
   async createMessageInConversation(
-    @Param('conversationId') conversationId: string,
+    @Param('conversationId') conversationId: number,
     @Body()
-    messageData: {
-      role: 'assistant' | 'user' | 'system';
-      message: string;
-      tags: string[];
-      source?: string;
-    },
-  ): Promise<Message> {
-    const { role, message, tags, source } = messageData;
-    return this.messageService.createMessage(
-      conversationId,
-      role,
-      message,
-      tags,
-      source,
-    );
+    messageData,
+  ): Promise<MessageModel> {
+    return this.messageService.newCreateMessage({
+      conversationId: Number(conversationId),
+      ...messageData,
+    });
   }
 
   @Post('/message')
@@ -66,6 +59,12 @@ export class MessageController {
     @Body() messageData: { message: string },
   ): Promise<Message> {
     return this.messageService.updateMessage(id, messageData.message);
+  }
+
+  @Get('/message/:id')
+  @UseGuards(AuthTokenGuard)
+  async getOneById(@Param('id') id: number): Promise<MessageModel> {
+    return this.messageService.getOneById(id);
   }
 
   @Delete('/message/:id')

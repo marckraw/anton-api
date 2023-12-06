@@ -1,5 +1,5 @@
 ### Sign up
-POST http://localhost:8080/v1/auth/signup
+POST http://localhost:30152/v1/auth/signup
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Sign up
-POST https://anton.mrck.dev/v1/auth/signup
+POST http://localhost:30152/v1/auth/signup
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Sign In
-POST http://localhost:8080/v1/auth/signin
+POST http://localhost:30152/v1/auth/signin
 Content-Type: application/json
 
 {
@@ -26,16 +26,16 @@ Content-Type: application/json
 }
 
 ### Sign Out
-GET http://localhost:8080/v1/auth/signout
+GET http://localhost:30152/v1/auth/signout
 
 ### Get logged in user
-GET http://localhost:8080/v1/auth/me
+GET http://localhost:30152/v1/auth/me
 
 ### DELETE user by id
-DELETE http://localhost:8080/v1/auth/fe7f0896-cf5e-489c-99e7-09dcc3bd07b4
+DELETE http://localhost:30152/v1/auth/fe7f0896-cf5e-489c-99e7-09dcc3bd07b4
 
 ### PATCH user by id
-PATCH http://localhost:8080/v1/auth/22a5471c-b870-4d29-bc16-cdfc2eab1a1c
+PATCH http://localhost:30152/v1/auth/22a5471c-b870-4d29-bc16-cdfc2eab1a1c
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ### GET user by id
-GET http://localhost:8080/v1/auth/22a5471c-b870-4d29-bc16-cdfc2eab1a1c
+GET http://localhost:30152/v1/auth/d0bc3132-6aed-4edd-8b86-942292f809d8
 
 ### GET find all users with email
-GET http://localhost:8080/v1/auth?email=marckraw@icloud.com
+GET http://localhost:30152/v1/auth?email=marckraw@icloud.com
