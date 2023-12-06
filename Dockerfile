@@ -12,6 +12,8 @@ COPY package*.json ./
 COPY yarn.lock ./
 COPY ca-certificate.crt ./
 
+
+
 # Install your application's dependencies
 RUN yarn
 
