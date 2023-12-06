@@ -35,6 +35,7 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
+          command_timeout: 20m
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USER }}
