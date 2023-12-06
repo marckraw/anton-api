@@ -43,6 +43,8 @@ async function bootstrap() {
     .addTag('peakpursuit')
     .build();
 
+  console.log('Whatever changes');
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   await app.listen(30152);
