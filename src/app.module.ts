@@ -37,12 +37,12 @@ import { DatabaseModule } from './database/database.module';
           username: configService.get<string>('POSTGRES_USER'),
           password: configService.get<string>('POSTGRES_PASSWORD'),
           database: configService.get<string>('POSTGRES_DB'),
-          ssl: {
-            rejectUnauthorized: true,
-            ca: readFileSync(
-              __dirname + '/../../' + 'ca-certificate.crt',
-            ).toString(),
-          },
+          // ssl: {
+          //   rejectUnauthorized: true,
+          //   ca: readFileSync(
+          //     __dirname + '/../../' + 'ca-certificate.crt',
+          //   ).toString(),
+          // },
           synchronize: true,
           autoLoadEntities: true,
           entities: [User, Conversation, Message],
