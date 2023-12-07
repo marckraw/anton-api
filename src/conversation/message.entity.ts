@@ -13,7 +13,7 @@ import { Conversation } from './conversation.entity';
 
 @Entity('message')
 export class Message {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()

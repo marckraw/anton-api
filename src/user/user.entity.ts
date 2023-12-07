@@ -11,7 +11,7 @@ import {
 
 @Entity('usr') // Just because 'user' is a reserved word in Postgres
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
