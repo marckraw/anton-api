@@ -40,7 +40,6 @@
     "@nestjs/core": "^10.2.8",
     "@nestjs/platform-express": "^10.2.8",
     "@nestjs/swagger": "^7.1.15",
-    "@nestjs/typeorm": "^10.0.0",
     "@types/cookie-parser": "^1.4.6",
     "@types/cookie-session": "^2.0.47",
     "better-sqlite3": "^9.2.0",
