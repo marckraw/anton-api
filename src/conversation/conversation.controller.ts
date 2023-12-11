@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
-import { Conversation } from './conversation.entity';
+// import { Conversation } from './conversation.entity';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { ConversationModel } from './conversation.model';
 
@@ -23,32 +14,32 @@ export class ConversationController {
     return this.conversationService.getAllConversations();
   }
 
-  @Get(':id')
-  @UseGuards(AuthTokenGuard)
-  async getConversation(@Param('id') id: string): Promise<Conversation> {
-    return this.conversationService.getConversationWithMessages(id);
-  }
-
-  @Post()
-  @UseGuards(AuthTokenGuard)
-  async createConversation(
-    @Body() conversation: Partial<Conversation>,
-  ): Promise<Conversation> {
-    return this.conversationService.createConversation(conversation);
-  }
-
-  @Put(':id')
-  @UseGuards(AuthTokenGuard)
-  async updateConversation(
-    @Param('id') id: string,
-    @Body() conversation: Partial<Conversation>,
-  ): Promise<Conversation> {
-    return this.conversationService.updateConversation(id, conversation);
-  }
-
-  @Delete(':id')
-  @UseGuards(AuthTokenGuard)
-  async deleteConversation(@Param('id') id: string): Promise<void> {
-    return this.conversationService.deleteConversation(id);
-  }
+  // @Get(':id')
+  // @UseGuards(AuthTokenGuard)
+  // async getConversation(@Param('id') id: string): Promise<Conversation> {
+  //   return this.conversationService.getConversationWithMessages(id);
+  // }
+  //
+  // @Post()
+  // @UseGuards(AuthTokenGuard)
+  // async createConversation(
+  //   @Body() conversation: Partial<Conversation>,
+  // ): Promise<Conversation> {
+  //   return this.conversationService.createConversation(conversation);
+  // }
+  //
+  // @Put(':id')
+  // @UseGuards(AuthTokenGuard)
+  // async updateConversation(
+  //   @Param('id') id: string,
+  //   @Body() conversation: Partial<Conversation>,
+  // ): Promise<Conversation> {
+  //   return this.conversationService.updateConversation(id, conversation);
+  // }
+  //
+  // @Delete(':id')
+  // @UseGuards(AuthTokenGuard)
+  // async deleteConversation(@Param('id') id: string): Promise<void> {
+  //   return this.conversationService.deleteConversation(id);
+  // }
 }

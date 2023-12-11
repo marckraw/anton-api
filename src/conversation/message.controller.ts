@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Post,
-  Param,
-  Body,
-  Put,
-  Delete,
-  UseGuards,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, Param, Body, UseGuards, Get } from '@nestjs/common';
 import { MessageService } from './message.service';
-import { Message } from './message.entity';
+// import { Message } from './message.entity';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { MessageModel } from './message.model';
 
@@ -30,36 +21,36 @@ export class MessageController {
     });
   }
 
-  @Post('/message')
-  @UseGuards(AuthTokenGuard)
-  async createMessage(
-    @Body()
-    messageData: {
-      conversationId: string;
-      role: 'assistant' | 'user' | 'system';
-      message: string;
-      tags: string[];
-      source?: string;
-    },
-  ): Promise<Message> {
-    const { conversationId, role, message, tags, source } = messageData;
-    return this.messageService.createMessage(
-      conversationId,
-      role,
-      message,
-      tags,
-      source,
-    );
-  }
+  // @Post('/message')
+  // @UseGuards(AuthTokenGuard)
+  // async createMessage(
+  //   @Body()
+  //   messageData: {
+  //     conversationId: string;
+  //     role: 'assistant' | 'user' | 'system';
+  //     message: string;
+  //     tags: string[];
+  //     source?: string;
+  //   },
+  // ): Promise<Message> {
+  //   const { conversationId, role, message, tags, source } = messageData;
+  //   return this.messageService.createMessage(
+  //     conversationId,
+  //     role,
+  //     message,
+  //     tags,
+  //     source,
+  //   );
+  // }
 
-  @Put('/message/:id')
-  @UseGuards(AuthTokenGuard)
-  async updateMessage(
-    @Param('id') id: string,
-    @Body() messageData: { message: string },
-  ): Promise<Message> {
-    return this.messageService.updateMessage(id, messageData.message);
-  }
+  // @Put('/message/:id')
+  // @UseGuards(AuthTokenGuard)
+  // async updateMessage(
+  //   @Param('id') id: string,
+  //   @Body() messageData: { message: string },
+  // ): Promise<Message> {
+  //   return this.messageService.updateMessage(id, messageData.message);
+  // }
 
   @Get('/message/:id')
   @UseGuards(AuthTokenGuard)
@@ -67,9 +58,9 @@ export class MessageController {
     return this.messageService.getOneById(id);
   }
 
-  @Delete('/message/:id')
-  @UseGuards(AuthTokenGuard)
-  async deleteMessage(@Param('id') id: string): Promise<void> {
-    return this.messageService.deleteMessage(id);
-  }
+  // @Delete('/message/:id')
+  // @UseGuards(AuthTokenGuard)
+  // async deleteMessage(@Param('id') id: string): Promise<void> {
+  //   return this.messageService.deleteMessage(id);
+  // }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AiService } from './ai.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
@@ -88,61 +88,61 @@ export class AiController {
     return this.langchainService.exampleWithMemory(body);
   }
 
-  @Post('/llm/chat')
-  @UseGuards(AuthTokenGuard)
-  async chatWithDatabase(@Body() body: any) {
-    let conversationId;
-    if (!body.conversationId) {
-      // no idea, create new conversation
-      const now = new Date();
-      const localeDateString = now.toLocaleDateString('pl');
-      const localeTimeString = now.toLocaleTimeString('pl');
-
-      const result = await this.conversationService.createConversation({
-        name: `${localeDateString}_${localeTimeString}`,
-        model: 'gpt-4',
-      });
-
-      console.log('This is result: ');
-      console.log(result);
-      conversationId = result.id;
-    } else {
-      conversationId = body.conversationId;
-    }
-
-    const conversationData =
-      await this.conversationService.getConversationWithMessages(
-        conversationId,
-      );
-
-    const askAI = await this.langchainService.withConversationData(
-      body,
-      conversationData,
-    );
-
-    const aiResponse = askAI.response;
-
-    // Save prompt to database
-    await this.messageService.createMessage(
-      conversationData.id,
-      'user',
-      body.prompt,
-      [],
-      'unknown',
-    );
-
-    // Save ai response to database
-    await this.messageService.createMessage(
-      conversationData.id,
-      'assistant',
-      aiResponse,
-      [],
-      'unknown',
-    );
-
-    return {
-      ...askAI,
-      conversationId: conversationData.id,
-    };
-  }
+  // @Post('/llm/chat')
+  // @UseGuards(AuthTokenGuard)
+  // async chatWithDatabase(@Body() body: any) {
+  //   let conversationId;
+  //   if (!body.conversationId) {
+  //     // no idea, create new conversation
+  //     const now = new Date();
+  //     const localeDateString = now.toLocaleDateString('pl');
+  //     const localeTimeString = now.toLocaleTimeString('pl');
+  //
+  //     const result = await this.conversationService.createConversation({
+  //       name: `${localeDateString}_${localeTimeString}`,
+  //       model: 'gpt-4',
+  //     });
+  //
+  //     console.log('This is result: ');
+  //     console.log(result);
+  //     conversationId = result.id;
+  //   } else {
+  //     conversationId = body.conversationId;
+  //   }
+  //
+  //   const conversationData =
+  //     await this.conversationService.getConversationWithMessages(
+  //       conversationId,
+  //     );
+  //
+  //   const askAI = await this.langchainService.withConversationData(
+  //     body,
+  //     conversationData,
+  //   );
+  //
+  //   const aiResponse = askAI.response;
+  //
+  //   // Save prompt to database
+  //   await this.messageService.createMessage(
+  //     conversationData.id,
+  //     'user',
+  //     body.prompt,
+  //     [],
+  //     'unknown',
+  //   );
+  //
+  //   // Save ai response to database
+  //   await this.messageService.createMessage(
+  //     conversationData.id,
+  //     'assistant',
+  //     aiResponse,
+  //     [],
+  //     'unknown',
+  //   );
+  //
+  //   return {
+  //     ...askAI,
+  //     conversationId: conversationData.id,
+  //   };
+  // }
 }
