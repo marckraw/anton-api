@@ -1,11 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 
 @Controller('webhooks')
 export class WebhooksController {
   @Post('catch')
-  catchWebhook(@Body() payload: any) {
+  catchWebhook(@Body() payload: any, @Res() res: Response) {
     console.log('This is payload: ');
     console.log(payload);
-    return payload;
+
+    // @ts-expect-error just for testing
+    return res.status(HttpStatus.OK).json(payload);
   }
 }
