@@ -19,7 +19,7 @@ export class AiController {
   ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthTokenGuard)
   sendMessage(@Body() body: SingleShotChatGptRequestDto) {
     return this.aiService.simpleCompletion(body);
   }
