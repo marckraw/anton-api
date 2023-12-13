@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Anton } from '@mrck-labs/anton-sdk';
 import { systemPrompts } from './prompts/system';
 import {
   FALLBACK_MAX_GPT3_TOKENS,
@@ -15,6 +16,7 @@ import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 @Injectable()
 export class AiService {
   openai: OpenAIApi;
+  anton: Anton;
 
   constructor(private configService: ConfigService) {
     const configuration = new Configuration({
@@ -22,6 +24,7 @@ export class AiService {
     });
 
     this.openai = new OpenAIApi(configuration);
+    this.anton = new Anton(configService.get<string>('OPEN_AI_TOKEN'));
   }
 
   async chat(body: ChatGPTRequestDto) {
@@ -46,27 +49,52 @@ export class AiService {
   async simpleCompletion(body: SingleShotChatGptRequestDto) {
     const { temperature, max_tokens, model, prompt } = body;
 
-    const usedModel = model ? model : FALLBACK_MODEL;
+    console.log('Ble ble');
 
-    const { data } = await this.openai.createChatCompletion({
-      model: usedModel,
-      temperature: temperature ? temperature : FALLBACK_TEMPERATURE,
-      max_tokens: max_tokens
-        ? max_tokens
-        : usedModel === 'gpt-3.5-turbo'
-        ? FALLBACK_MAX_GPT3_TOKENS
-        : FALLBACK_MAX_GPT4_TOKENS,
-      messages: [
-        {
-          role: 'system',
-          content: systemPrompts.basePrompt(),
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
+    // const usedModel = model ? model : FALLBACK_MODEL;
+
+    console.log('This is body that i will send');
+    console.log(body);
+
+    this.anton.setInitialMessages([
+      {
+        role: 'system',
+        content: systemPrompts.basePrompt(),
+      },
+    ]);
+
+    const data = await this.anton.chatCompletion({
+      body: {
+        messages: [
+          {
+            role: 'user',
+            content: body.prompt,
+          },
+        ],
+      },
     });
+
+    // const usedModel = model ? model : FALLBACK_MODEL;
+    //
+    // const { data } = await this.openai.createChatCompletion({
+    //   model: usedModel,
+    //   temperature: temperature ? temperature : FALLBACK_TEMPERATURE,
+    //   max_tokens: max_tokens
+    //     ? max_tokens
+    //     : usedModel === 'gpt-3.5-turbo'
+    //     ? FALLBACK_MAX_GPT3_TOKENS
+    //     : FALLBACK_MAX_GPT4_TOKENS,
+    //   messages: [
+    //     {
+    //       role: 'system',
+    //       content: systemPrompts.basePrompt(),
+    //     },
+    //     {
+    //       role: 'user',
+    //       content: prompt,
+    //     },
+    //   ],
+    // });
 
     return data;
   }
