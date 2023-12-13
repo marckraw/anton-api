@@ -1,5 +1,5 @@
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
-import { ChatGPTModel } from '../constants';
+import { ChatGPTModel } from '../ai.constants';
 
 export class SingleShotChatGptRequestDto {
   @IsOptional()

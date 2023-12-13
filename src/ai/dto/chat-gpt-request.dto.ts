@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
-import { ChatGPTModel } from '../constants';
+import { ChatGPTModel } from '../ai.constants';
 
 export interface Message {
   role: 'system' | 'user' | 'assistant';

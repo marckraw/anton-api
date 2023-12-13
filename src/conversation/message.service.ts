@@ -25,9 +25,6 @@ export class MessageService {
       ...createMessage,
     });
 
-    console.log('This is new message: ');
-    console.log(newMessage);
-
     return newMessage;
   }
 

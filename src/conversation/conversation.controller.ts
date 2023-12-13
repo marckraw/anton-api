@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 // import { Conversation } from './conversation.entity';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
@@ -14,11 +20,13 @@ export class ConversationController {
     return this.conversationService.getAllConversations();
   }
 
-  // @Get(':id')
-  // @UseGuards(AuthTokenGuard)
-  // async getConversation(@Param('id') id: string): Promise<Conversation> {
-  //   return this.conversationService.getConversationWithMessages(id);
-  // }
+  @Get(':id')
+  @UseGuards(AuthTokenGuard)
+  async getConversation(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ConversationModel> {
+    return this.conversationService.getConversationWithMessages(id);
+  }
   //
   // @Post()
   // @UseGuards(AuthTokenGuard)

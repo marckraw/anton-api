@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 // import { Conversation } from './conversation.entity';
 import { ModelClass } from 'objection';
 import { ConversationModel } from './conversation.model';
+import { MessageModel } from './message.model';
 
 @Injectable()
 export class ConversationService {
@@ -14,14 +15,16 @@ export class ConversationService {
     return this.conversationModel.query();
   }
 
-  // async createConversation(
-  //   conversationData: Partial<Conversation>,
-  // ): Promise<Conversation> {
-  //   const newConversation =
-  //     this.conversationRepository.create(conversationData);
-  //   return await this.conversationRepository.save(newConversation);
-  // }
-  //
+  async createConversation(
+    conversationData: Partial<ConversationModel>,
+  ): Promise<ConversationModel> {
+    const newConversation = await this.conversationModel
+      .query()
+      .insert(conversationData);
+
+    return newConversation;
+  }
+
   // async updateConversation(
   //   id: string,
   //   conversationData: Partial<Conversation>,
@@ -46,12 +49,13 @@ export class ConversationService {
   //   await this.conversationRepository.remove(conversation);
   // }
   //
-  // async getConversationWithMessages(
-  //   conversationId: string,
-  // ): Promise<Conversation> {
-  //   return await this.conversationRepository.findOne({
-  //     where: { id: conversationId },
-  //     relations: ['messages'],
-  //   });
-  // }
+  async getConversationWithMessages(
+    conversationId: number,
+  ): Promise<ConversationModel> {
+    return this.conversationModel
+      .query()
+      .findById(conversationId)
+      .withGraphFetched('messages')
+      .throwIfNotFound(`Conversations with id: ${conversationId} not found`);
+  }
 }
