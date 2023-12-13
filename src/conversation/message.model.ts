@@ -4,7 +4,7 @@ import { ConversationModel } from './conversation.model';
 export class MessageModel extends BaseModel {
   static tableName = 'messages';
 
-  id: string;
+  readonly id: string;
   role: 'assistant' | 'user' | 'system';
   message: string;
   source: string;

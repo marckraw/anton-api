@@ -1,4 +1,4 @@
-import { encode } from '@nem035/gpt-3-encoder';
+import { countTokens } from '@mrck-labs/anton-sdk/utils';
 import { Message } from './dto/chat-gpt-request.dto';
 
 export const countTokensFromMessages = (messages: Message[]) => {
@@ -7,17 +7,7 @@ export const countTokensFromMessages = (messages: Message[]) => {
   }, 0);
 };
 
-export const countTokens = (str: string) => {
-  if (str.length > 0) {
-    const encoded = encode(str);
-
-    return encoded.length;
-  } else {
-    return 0;
-  }
-};
-
 export default {
-  countTokens,
   countTokensFromMessages,
+  countTokens,
 };

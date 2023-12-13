@@ -1,148 +1,136 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { AiService } from './ai.service';
-import { AuthGuard } from '../guards/auth.guard';
+import { AntonService } from './anton.service';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
 import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
-import { ChatGPTRequestDto } from './dto/chat-gpt-request.dto';
 import { LangchainService } from './langchain.service';
 import { ConversationService } from '../conversation/conversation.service';
 import { MessageService } from '../conversation/message.service';
+import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
+import { DEFAULT_MODEL } from './ai.constants';
+import { ChatWithDatabaseDto } from './dto/chat-with-database.dto';
 
 @Controller('ai')
 export class AiController {
   constructor(
-    private readonly aiService: AiService,
+    private readonly antonService: AntonService,
     private readonly langchainService: LangchainService,
     private readonly conversationService: ConversationService,
     private readonly messageService: MessageService,
   ) {}
 
-  @Post()
-  @UseGuards(AuthTokenGuard)
-  sendMessage(@Body() body: SingleShotChatGptRequestDto) {
-    return this.aiService.simpleCompletion(body);
-  }
-
-  // Embedding
-  // @Post()
-  // @UseGuards(AuthTokenGuard)
-  // embedd(@Body() body: any) {
-  //   return this.aiService.simpleCompletion(body.content);
-  // }
-
-  @Post('/chat')
-  @UseGuards(AuthTokenGuard)
-  chat(@Body() body: ChatGPTRequestDto) {
-    return this.aiService.chat(body);
-  }
-
   @Post('/single-shot/chat')
   @UseGuards(AuthTokenGuard)
   singleShotMessage(@Body() body: SingleShotChatGptRequestDto) {
-    return this.aiService.simpleCompletion(body);
+    return this.antonService.simpleCompletion(body);
   }
 
   @Post('/single-shot/image')
   @UseGuards(AuthTokenGuard)
-  generateImage(@Body() body: AiImageDto) {
-    return this.aiService.createImage(body.prompt);
+  generateImage(@Body() body: AiImageDto): Promise<Image[]> {
+    return this.antonService.createImage(body.prompt);
   }
 
-  @Post('/single-shot/tokens')
+  @Post('/utils/tokens')
   @UseGuards(AuthTokenGuard)
   countTokens(@Body() body: SingleShotChatGptRequestDto) {
-    return this.aiService.countTokens(body.prompt);
-  }
-
-  @Post('/translate-text')
-  @UseGuards(AuthTokenGuard)
-  testLLM(@Body() body: SingleShotChatGptRequestDto) {
-    // return this.langchainService.testSomething(body);
-    return this.langchainService.translateText(body);
+    return this.antonService.countTokens(body.prompt);
   }
 
   @Post('/ask-google')
   @UseGuards(AuthTokenGuard)
   askGoogle(@Body() body: SingleShotChatGptRequestDto) {
-    // return this.langchainService.testSomething(body);
     return this.langchainService.askGoogle(body);
   }
 
-  @Post('/test-llm')
+  @Post('/chat')
   @UseGuards(AuthTokenGuard)
-  testingPromptCreation(@Body() body: SingleShotChatGptRequestDto) {
-    return this.langchainService.testingLLMPromptCreation(body);
-  }
+  async chatWithDatabase(@Body() body: ChatWithDatabaseDto) {
+    const now = new Date();
+    const localeDateString = now.toLocaleDateString('pl');
+    const localeTimeString = now.toLocaleTimeString('pl');
 
-  @Post('/llm/test-chat')
-  @UseGuards(AuthTokenGuard)
-  testingChatPromptCreation(@Body() body: SingleShotChatGptRequestDto) {
-    return this.langchainService.testingChatPromptCreation(body);
-  }
+    const debug = {
+      localeDateString,
+      localeTimeString,
+    };
 
-  @Post('/llm-with-memory')
-  @UseGuards(AuthTokenGuard)
-  exampleWithMemory(@Body() body: SingleShotChatGptRequestDto) {
-    // return this.langchainService.testSomething(body);
-    return this.langchainService.exampleWithMemory(body);
-  }
+    if (!body.conversationId) {
+      // 1. No conversationId provided. Will create new one.
+      const { id: conversationId } =
+        await this.conversationService.createConversation({
+          name: `${localeDateString}_${localeTimeString}`,
+          model: DEFAULT_MODEL,
+        });
 
-  // @Post('/llm/chat')
-  // @UseGuards(AuthTokenGuard)
-  // async chatWithDatabase(@Body() body: any) {
-  //   let conversationId;
-  //   if (!body.conversationId) {
-  //     // no idea, create new conversation
-  //     const now = new Date();
-  //     const localeDateString = now.toLocaleDateString('pl');
-  //     const localeTimeString = now.toLocaleTimeString('pl');
-  //
-  //     const result = await this.conversationService.createConversation({
-  //       name: `${localeDateString}_${localeTimeString}`,
-  //       model: 'gpt-4',
-  //     });
-  //
-  //     console.log('This is result: ');
-  //     console.log(result);
-  //     conversationId = result.id;
-  //   } else {
-  //     conversationId = body.conversationId;
-  //   }
-  //
-  //   const conversationData =
-  //     await this.conversationService.getConversationWithMessages(
-  //       conversationId,
-  //     );
-  //
-  //   const askAI = await this.langchainService.withConversationData(
-  //     body,
-  //     conversationData,
-  //   );
-  //
-  //   const aiResponse = askAI.response;
-  //
-  //   // Save prompt to database
-  //   await this.messageService.createMessage(
-  //     conversationData.id,
-  //     'user',
-  //     body.prompt,
-  //     [],
-  //     'unknown',
-  //   );
-  //
-  //   // Save ai response to database
-  //   await this.messageService.createMessage(
-  //     conversationData.id,
-  //     'assistant',
-  //     aiResponse,
-  //     [],
-  //     'unknown',
-  //   );
-  //
-  //   return {
-  //     ...askAI,
-  //     conversationId: conversationData.id,
-  //   };
-  // }
+      // 2. create a message with conversationId created passed (role: user)
+      const messageCreated = await this.messageService.newCreateMessage({
+        ...body,
+        conversationId,
+      });
+
+      // 3. Get all messages in conversation of conversationId provided
+      const currentConversation =
+        await this.conversationService.getConversationWithMessages(
+          conversationId,
+        );
+
+      // 4. Make request to Anton with the message provided, and all the other messages in the conversation
+      const data = await this.antonService.chat(currentConversation);
+
+      // 5. Create a message with conversationId passed from Anton response (role: assistant)
+      const antonMessageCreated = await this.messageService.newCreateMessage({
+        conversationId,
+        role: 'assistant',
+        source: 'anton',
+        message: data.choices[0].message.content,
+      });
+
+      return {
+        message: 'No conversationId provided. Will create new one.',
+        debug,
+        currentConversation,
+        messageExchange: {
+          messageCreated,
+          antonMessageCreated,
+        },
+        data,
+      };
+    } else {
+      // 2. create a message with conversationId created passed (role: user)
+      const messageCreated = await this.messageService.newCreateMessage(body);
+
+      // 3. Get all messages in conversation of conversationId provided
+      const { conversationId } = body;
+
+      const currentConversation =
+        await this.conversationService.getConversationWithMessages(
+          conversationId,
+        );
+
+      // 4. Make request to Anton with the message provided, and all the other messages in the conversation
+      const data = await this.antonService.chat(currentConversation);
+
+      // 5. Create a message with conversationId passed from Anton response (role: assistant)
+      const antonMessageCreated = await this.messageService.newCreateMessage({
+        conversationId,
+        role: 'assistant',
+        source: 'anton',
+        message: data.choices[0].message.content,
+      });
+
+      return {
+        message:
+          'conversationId provided, adding message to database. converstaionId: ' +
+          body.conversationId,
+        debug,
+        currentConversation,
+        messageExchange: {
+          messageCreated,
+          antonMessageCreated,
+        },
+        data,
+      };
+    }
+  }
 }
