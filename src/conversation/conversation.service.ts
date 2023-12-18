@@ -25,19 +25,14 @@ export class ConversationService {
     return newConversation;
   }
 
-  // async updateConversation(
-  //   id: string,
-  //   conversationData: Partial<Conversation>,
-  // ): Promise<Conversation> {
-  //   const conversation = await this.conversationRepository.findOneBy({
-  //     id: id,
-  //   });
-  //   if (!conversation) {
-  //     throw new Error('Conversation not found');
-  //   }
-  //   Object.assign(conversation, conversationData);
-  //   return await this.conversationRepository.save(conversation);
-  // }
+  async updateConversation(
+    id: string,
+    conversationData: Partial<ConversationModel>,
+  ) {
+    const conversation = await this.conversationModel.query().findById(id);
+
+    return conversation.$query().updateAndFetch(conversationData);
+  }
   //
   // async deleteConversation(id: string): Promise<void> {
   //   const conversation = await this.conversationRepository.findOneBy({
