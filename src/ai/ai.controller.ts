@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Query, Sse, UseGuards } from '@nestjs/common';
 import { AntonService } from './anton.service';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
@@ -9,6 +9,7 @@ import { MessageService } from '../conversation/message.service';
 import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
 import { DEFAULT_MODEL } from './ai.constants';
 import { ChatWithDatabaseDto } from './dto/chat-with-database.dto';
+import { Observable } from 'rxjs';
 
 @Controller('ai')
 export class AiController {
@@ -41,6 +42,11 @@ export class AiController {
   @UseGuards(AuthTokenGuard)
   askGoogle(@Body() body: SingleShotChatGptRequestDto) {
     return this.langchainService.askGoogle(body);
+  }
+
+  @Sse('/chat/stream')
+  chatCompletion(@Body() body: ChatWithDatabaseDto): Observable<any> {
+    return this.antonService.chatCompletionStream(body);
   }
 
   @Post('/chat')

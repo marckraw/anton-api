@@ -42,6 +42,7 @@
     "@nestjs/swagger": "^7.1.17",
     "@types/cookie-parser": "^1.4.6",
     "@types/cookie-session": "^2.0.48",
+    "axios": "^1.6.2",
     "better-sqlite3": "^9.2.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

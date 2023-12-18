@@ -8,6 +8,8 @@ import utils from './ai.utils';
 import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
 import { ConversationModel } from '../conversation/conversation.model';
 import { MessageModel } from '../conversation/message.model';
+import { ChatWithDatabaseDto } from './dto/chat-with-database.dto';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AntonService {
@@ -21,6 +23,36 @@ export class AntonService {
 
     this.openai = new OpenAIApi(configuration);
     this.anton = new Anton(this.configService.get<string>('OPEN_AI_TOKEN'));
+  }
+
+  async chatCompletionStream(body: ChatWithDatabaseDto) {
+    return new Observable((subscriber) => {
+      const config = {
+        method: 'post',
+        url: 'https://api.openai.com/v1/your-endpoint', // replace with actual endpoint
+        headers: {
+          Authorization: 'Bearer your_api_key', // replace with your API key
+          // other required headers
+        },
+        responseType: 'stream', // critical for streaming the response
+      };
+
+      axios(config)
+        .then((response) => {
+          response.data.on('data', (chunk: Buffer) => {
+            const textChunk = chunk.toString();
+            // Parse chunk and construct a server-sent event
+            // Make sure you are sending valid JSON, or transform it if necessary.
+            subscriber.next({ data: textChunk });
+          });
+          response.data.on('end', () => {
+            subscriber.complete();
+          });
+        })
+        .catch((error) => {
+          subscriber.error(error);
+        });
+    });
   }
 
   async chat(conversation: ConversationModel) {
