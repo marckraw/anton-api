@@ -1,7 +1,7 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
+const configuration = {
   apiKey: process.env.OPEN_AI_TOKEN,
-});
+};
 
-export const openai = new OpenAIApi(configuration);
+export const openai = new OpenAI(configuration);

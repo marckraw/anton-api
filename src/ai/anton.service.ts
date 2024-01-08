@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Anton } from '@mrck-labs/anton-sdk';
 import { systemPrompts } from './prompts/system';
 import { ConfigService } from '@nestjs/config';
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.dto';
 import utils from './ai.utils';
 import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
@@ -11,15 +11,15 @@ import { MessageModel } from '../conversation/message.model';
 
 @Injectable()
 export class AntonService {
-  openai: OpenAIApi;
+  openai: OpenAI;
   anton: Anton;
 
   constructor(private configService: ConfigService) {
-    const configuration = new Configuration({
+    const configuration = {
       apiKey: this.configService.get<string>('OPEN_AI_TOKEN'),
-    });
+    };
 
-    this.openai = new OpenAIApi(configuration);
+    this.openai = new OpenAI(configuration);
     this.anton = new Anton(this.configService.get<string>('OPEN_AI_TOKEN'));
   }
 
