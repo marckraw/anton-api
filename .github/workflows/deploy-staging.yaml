@@ -16,8 +16,8 @@ jobs:
       - name: Deploy to DigitalOcean
         run: |
           ssh -o StrictHostKeyChecking=no root@167.99.252.151 << 'EOF'
-            cd /var/www/anton/api
-            git pull origin master
+            cd /var/www/anton/anton-api
+            git pull origin develop
             docker-compose down
             docker-compose up --build -d
           EOF
