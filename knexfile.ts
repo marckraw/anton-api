@@ -4,7 +4,7 @@ import { knexSnakeCaseMappers } from 'objection';
 console.log("Knexfile")
 console.log(process.env.POSTGRES_HOST);
 console.log(process.env.POSTGRES_USER);
-
+console.log("whatever")
 // Assuming these values are being correctly pulled from your .env file
 const POSTGRES_HOST = process.env.POSTGRES_HOST; // This should be 'db' in Docker context
 const POSTGRES_USER = process.env.POSTGRES_USER;
