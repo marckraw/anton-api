@@ -16,10 +16,10 @@ SERPAPI_API_KEY=***
 
 To get this env variables install 1password cli
 
-and then install:
+and then install globally:
 
 ```bash
-npm install @mrck-labs/1password-env-integrator@latest
+npm install @mrck-labs/1password-env-integrator@latest --global
 ```
 
 and the run
