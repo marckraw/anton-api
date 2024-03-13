@@ -1,5 +1,9 @@
 # Anton API
 
+## Branches
+- `master` - the master (production) branch
+- `develop` - the development branch (active developmeng, staging environment)
+
 ## Environment variables
 ```
 POSTGRES_HOST=db
