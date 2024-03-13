@@ -6,6 +6,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 const cookieSession = require('cookie-session');
 
 const corsWhitelist = [
+  'http://localhost:8080',
   'http://localhost:3000',
   'https://web.hyzone.app',
   'http://localhost:1420',
