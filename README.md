@@ -35,13 +35,11 @@ op signin
 
 ## Development
 
-```bash
-
 To run when developing
 ```bash
 docker-compose up --build 
 ```
 
 It will build and run 2 containers
-- `anton-api` - the main container with the API
-- `anton-db` - a container with a postgres database
+- `app` - the main container with the API on exposed port 3000
+- `db` - a container with a postgres database exposed on port 5432 (?)
