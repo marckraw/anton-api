@@ -33,7 +33,7 @@
     "db:rollback": "knex migrate:rollback --knexfile knexfile.ts"
   },
   "dependencies": {
-    "@mrck-labs/anton-sdk": "^0.1.5",
+    "@mrck-labs/anton-sdk": "^0.4.12",
     "@nem035/gpt-3-encoder": "^1.1.7",
     "@nestjs/common": "^10.3.5",
     "@nestjs/config": "^3.2.0",

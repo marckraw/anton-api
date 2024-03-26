@@ -6,6 +6,9 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    volumes:
+      - .:/app
+      - /app/node_modules
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
       OPENAI_API_KEY: ${OPEN_AI_TOKEN}

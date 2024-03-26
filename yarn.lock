@@ -924,10 +924,10 @@
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.14.2.tgz#c3ec604a0b54b9a9b87e9735dfc59e1a5da6a5fb"
   integrity sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==
 
-"@mrck-labs/anton-sdk@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@mrck-labs/anton-sdk/-/anton-sdk-0.1.5.tgz#176ffd9465940e8e849b22549e6456db36b15053"
-  integrity sha512-Kx6QGyZrrFwkEsg7UL2b74iW8HqMgMv+qF1Bf1Md4Hij/xu3m+mSfFSb1qS45u3zKaxgE/1bl+R4wW+WC5bFAw==
+"@mrck-labs/anton-sdk@^0.4.12":
+  version "0.4.12"
+  resolved "https://registry.yarnpkg.com/@mrck-labs/anton-sdk/-/anton-sdk-0.4.12.tgz#0110bdcc2cc7f06a16d7bf7985eacf3f1d3c98e2"
+  integrity sha512-UO38dzOfxkVJBi8gbkvHFVRozuePklldRTh2ksABBYrWZMTFESJ0hiRZwze1RZu16usbdSSy7/dKGn2MTuEj7A==
   dependencies:
     "@nem035/gpt-3-encoder" "^1.1.7"
     "@t3-oss/env-core" "^0.7.1"

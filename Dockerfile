@@ -13,4 +13,5 @@ EXPOSE 3000
 # Build the application
 RUN yarn build
 # Start the application
-CMD [ "yarn", "start:prod" ]
+#CMD [ "yarn", "start:prod" ]
+CMD [ "yarn", "start:dev" ]

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Anton } from '@mrck-labs/anton-sdk';
+import { countTokens, antonServer} from '@mrck-labs/anton-sdk/utils';
 import { systemPrompts } from './prompts/system';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
@@ -8,6 +9,7 @@ import utils from './ai.utils';
 import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
 import { ConversationModel } from '../conversation/conversation.model';
 import { MessageModel } from '../conversation/message.model';
+import { SingleShotClaudeChatRequestDto } from './dto/single-shot-claude-chat-request.dto';
 
 @Injectable()
 export class AntonService {
@@ -42,9 +44,60 @@ export class AntonService {
           };
         }),
       },
-    });
+    } as any);
 
     return data;
+  }
+
+  async claudeSimpleCompletion(
+    body: SingleShotClaudeChatRequestDto,
+    claudeApiKey: string,
+  ) {
+    console.log('And this is fucking claude: ');
+    console.log(claudeApiKey);
+    const anton = antonServer(claudeApiKey, {});
+
+    console.log('whatever');
+    countTokens('asdasd');
+
+    console.log("This is body")
+    console.log(body)
+
+    const data = await anton.claudeChatCompletion({
+      model: body.model,
+      messages: body.messages,
+      max_tokens: body.max_tokens,
+    } as any);
+
+    console.log('This is fucking data');
+    console.log(data);
+
+    return data;
+
+    // this.anton.setInitialMessages([
+    //   {
+    //     role: 'system',
+    //     content: systemPrompts.basePrompt(),
+    //   },
+    // ]);
+
+    // const antonServer = new AntonServer({
+    //   apiKeys: {
+    //     claudeAIApiKey: claudeApiKey,
+    //   },
+    //   options: {
+    //     model: body.model,
+    //     initialMessages: [{ role: 'assistant', content: '' }],
+    //   },
+    // });
+    //
+    // const data = await antonServer.claudeChatCompletion({
+    //   body: {
+    //     ...body,
+    //   },
+    // });
+    //
+    // return data;
   }
 
   async simpleCompletion(body: SingleShotChatGptRequestDto) {
@@ -64,13 +117,13 @@ export class AntonService {
           },
         ],
       },
-    });
+    } as any);
 
     return data;
   }
 
   async createImage(prompt: any): Promise<Image[]> {
-    const { data } = await this.anton.createImage({
+    const { data } = await (this.anton as any).createImage({
       body: {
         model: 'dall-e-3',
         prompt,

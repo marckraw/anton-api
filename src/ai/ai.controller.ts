@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Headers } from '@nestjs/common';
 import { AntonService } from './anton.service';
 import { AuthTokenGuard } from '../guards/auth-token.guard';
 import { AiImageDto } from './dto/ai-image.dto';
@@ -6,9 +6,10 @@ import { SingleShotChatGptRequestDto } from './dto/single-shot-chat-gpt-request.
 import { LangchainService } from './langchain.service';
 import { ConversationService } from '../conversation/conversation.service';
 import { MessageService } from '../conversation/message.service';
-import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
+// import type { Image } from '@mrck-labs/anton-sdk/node_modules/openai/resources';
 import { DEFAULT_MODEL } from './ai.constants';
 import { ChatWithDatabaseDto } from './dto/chat-with-database.dto';
+import { SingleShotClaudeChatRequestDto } from './dto/single-shot-claude-chat-request.dto';
 
 @Controller('ai')
 export class AiController {
@@ -25,9 +26,15 @@ export class AiController {
     return this.antonService.simpleCompletion(body);
   }
 
+  @Post('/claude/chat')
+  @UseGuards(AuthTokenGuard)
+  singleShotClaudeChat(@Headers('x-api-key') claudeApiKey: string,@Body() body: SingleShotClaudeChatRequestDto) {
+    return this.antonService.claudeSimpleCompletion(body, claudeApiKey);
+  }
+
   @Post('/single-shot/image')
   @UseGuards(AuthTokenGuard)
-  generateImage(@Body() body: AiImageDto): Promise<Image[]> {
+  generateImage(@Body() body: AiImageDto): Promise<any[]> {
     return this.antonService.createImage(body.prompt);
   }
 
